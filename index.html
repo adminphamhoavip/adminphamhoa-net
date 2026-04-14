@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN: PHAMHOA.NET - PREMIUM PANEL</title>
+    <style>
+        /* --- HỆ THỐNG BIẾN MÀU CHUYÊN NGHIỆP --- */
+        :root {
+            --primary: #00ff88;
+            --secondary: #00d4ff;
+            --accent: #ff0055;
+            --bg-dark: #050508;
+            --card-bg: rgba(10, 10, 18, 0.9);
+            --border-color: rgba(0, 255, 136, 0.2);
+            --glow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        /* --- RESET & CƠ BẢN --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- HIỆU ỨNG NỀN DYNMIC CYBER --- */
+        .background-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #101525 0%, #050508 100%);
+        }
+
+        /* Lưới điện tử chuyển động */
+        .cyber-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: grid-move 10s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* Các đốm sáng mờ ảo */
+        .glow-spot {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: var(--primary);
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float-glow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes float-glow {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(10%, 10%); }
+        }
+
+        /* --- CONTAINER CHÍNH VỚI VIỀN NEON CHẠY --- */
+        .container {
+            width: 92%;
+            max-width: 420px;
+            min-height: 620px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Hiệu ứng viền phát sáng chạy vòng quanh card */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            z-index: -1;
+            border-radius: 22px;
+            animation: border-run 4s linear infinite;
+            background-size: 200% 100%;
+        }
+
+        @keyframes border-run {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* --- TIÊU ĐỀ --- */
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary), var(--primary));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-shine 3s linear infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes text-shine {
+            to { background-position: 200% center; }
+        }
+
+        /* --- NAVIGATION TABS --- */
+        .nav-tabs {
+            display: flex;
+            background: rgba(0,0,0,0.5);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #555;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.2);
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        /* --- LOGIN SCREEN --- */
+        #loginScreen {
+            position: absolute;
+            inset: 0;
+            background: #08080c;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 35px;
+            border-radius: 20px;
+        }
+
+        /* --- INPUTS & BUTTONS --- */
+        .input-group { margin-bottom: 20px; }
+        
+        label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.05);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.4s;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), #00cc6d);
+            color: #000;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-primary:active { transform: scale(0.96); }
+
+        /* --- HIỂN THỊ KẾT QUẢ --- */
+        #resultArea {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(0,0,0,0.6), rgba(20,20,30,0.6));
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            display: none;
+            animation: slideLeft 0.5s ease-out;
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .sens-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
+        }
+
+        .sens-value { color: var(--primary); font-weight: bold; font-family: 'Courier New', monospace; font-size: 16px;}
+        .fire-btn-val { color: var(--accent); font-weight: 900; text-shadow: 0 0 10px rgba(255,0,85,0.5); font-size: 18px;}
+
+        /* --- BOOST SECTION --- */
+        .boost-section { text-align: center; display: none; }
+        
+        .boost-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 2px dashed var(--secondary);
+            margin: 30px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            position: relative;
+            animation: pulse-circle 2s infinite;
+        }
+
+        @keyframes pulse-circle {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 212, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+        }
+
+        .opt-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            color: var(--primary);
+            font-weight: bold;
+            display: none;
+        }
+
+        /* --- MODAL CHUYÊN NGHIỆP --- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px); z-index: 200; display: none;
+            justify-content: center; align-items: center;
+        }
+
+        .modal-box {
+            background: #11111a; padding: 30px; border-radius: 20px;
+            width: 88%; max-width: 360px; text-align: center;
+            border: 1px solid var(--secondary);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .contact-info { margin-top: auto; font-size: 11px; color: #444; text-align: center; padding-top: 20px;}
+        
+        .flash-effect { animation: flash-white 0.5s; }
+        @keyframes flash-white { 0% { background: white; } 100% { background: transparent; } }
+
+        .shake-anim { animation: shake 0.4s; border-color: var(--accent) !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper">
+        <div class="cyber-grid"></div>
+        <div class="glow-spot" style="top: 10%; left: 10%;"></div>
+        <div class="glow-spot" style="bottom: 10%; right: 10%; background: var(--secondary);"></div>
+    </div>
+
+    <div class="container" id="loginScreen">
+        <h2>PHAMHOA.NET</h2>
+        <div class="input-group">
+            <label>Security Access</label>
+            <input type="password" id="passwordInput" placeholder="Nhập mật khẩu admin...">
+        </div>
+        <button class="btn btn-primary" onclick="checkPassword()">XÁC MINH DANH TÍNH</button>
+        <p style="text-align: center; margin-top: 20px; font-size: 10px; color: #333; letter-spacing: 2px;">SECURE CONNECTION ESTABLISHED</p>
+    </div>
+
+    <div class="container" id="mainMenu" style="display: none;">
+        <h2>PHAMHOA.NET</h2>
+
+        <div class="nav-tabs">
+            <div class="nav-item active" onclick="switchTab('sens')">THÔNG SỐ VIP</div>
+            <div class="nav-item" onclick="checkFollow()">TỐI ƯU FPS</div>
+        </div>
+        
+        <div id="tabSens" style="display: block;">
+            <div class="input-group">
+                <label>Database Thiết Bị:</label>
+                <select id="deviceSelect"></select>
+            </div>
+
+            <button class="btn btn-primary" onclick="generateSensitivity()">🚀 TRÍCH XUẤT DATA</button>
+
+            <div id="resultArea">
+                <div id="sensContent"></div>
+                <div class="contact-info" style="color: var(--secondary); border-top: 1px dashed #222; margin-top: 15px; padding-top: 15px;">
+                    📌 Data được cập nhật hàng tuần.<br><br>
+                    <span style="color: white; background: #0088ff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">Zalo: 0386.26.5304</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabBoost" class="boost-section">
+            <h3 style="color: var(--secondary); margin-bottom: 15px; font-size: 16px;">HỆ THỐNG TỐI ƯU</h3>
+            <div class="boost-circle">🚀</div>
+            <p style="font-size: 12px; color: #666; margin-bottom: 25px; line-height: 1.6;">Dọn dẹp bộ nhớ đệm và tối ưu hóa phản hồi cảm ứng Layer 2.</p>
+            
+            <button class="btn btn-primary" id="btnOpt" onclick="runOptimization()">⚡ KÍCH HOẠT TỐI ƯU</button>
+
+            <div id="optResult" class="opt-result">
+                🎯 KÍCH HOẠT THÀNH CÔNG!<br>
+                <span style="color: white; font-size: 11px; font-weight: normal; opacity: 0.7;">
+                    Đã áp dụng Engine: Super Smooth v4.0
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="followModal">
+        <div class="modal-box">
+            <h3 style="color: var(--primary); margin-bottom: 15px; letter-spacing: 1px;">XÁC THỰC NHIỆM VỤ</h3>
+            <p style="font-size: 13px; margin-bottom: 20px; line-height: 1.6; color: #999;">
+                Để sử dụng tính năng <b>Premium Boost</b>, vui lòng hoàn thành các bước sau:
+            </p>
+            <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: left; font-size: 12px; color: #ccc; border: 1px solid rgba(255,255,255,0.05);">
+                1️⃣ Follow TikTok: <b>phamhoa.net</b><br>
+                2️⃣ Thả tim & Comment video mới.<br>
+                3️⃣ Chờ 5 giây để hệ thống kiểm tra.
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn" style="background: #1a1a1a; color: #555;" onclick="closeModal()">ĐÓNG</button>
+                <button class="btn btn-primary" onclick="confirmFollow()">THỰC HIỆN</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- GIỮ NGUYÊN DANH SÁCH THIẾT BỊ 100% --- */
+        const devices = {
+            iphoneOld: [
+                "iPhone 6 / 6 Plus", "iPhone 6s / 6s Plus",
+                "iPhone 7 / 7 Plus", "iPhone 8 / 8 Plus",
+                "iPhone X", "iPhone XR", "iPhone XS / XS Max"
+            ],
+            iphoneNew: [
+                "iPhone 11", "iPhone 11 Pro / Pro Max",
+                "iPhone 12 / 12 Mini", "iPhone 12 Pro / Pro Max",
+                "iPhone 13 / 13 Mini", "iPhone 13 Pro / Pro Max",
+                "iPhone 14 / 14 Plus", "iPhone 14 Pro / Pro Max",
+                "iPhone 15 / 15 Plus", "iPhone 15 Pro / Pro Max",
+                "iPhone 16 / 16 Plus", "iPhone 16 Pro / Pro Max"
+            ],
+            samsung: [
+                "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24/S24+",
+                "Samsung Galaxy S23 Ultra", "Samsung Galaxy S23/S23+",
+                "Samsung Galaxy S22 Ultra", "Samsung Galaxy S21 FE",
+                "Samsung Galaxy Note 20 Ultra", "Samsung Z Fold 6",
+                "Samsung Z Flip 6", "Samsung Galaxy A55 5G",
+                "Samsung Galaxy A35", "Samsung Galaxy A54",
+                "Samsung Galaxy M55", "Samsung Galaxy M34"
+            ],
+            redmiOld: [
+                "Redmi Note 4 / 4X", "Redmi Note 5 Pro",
+                "Redmi Note 6 Pro", "Redmi Note 7 / 7 Pro",
+                "Redmi Note 8 / 8 Pro", "Redmi Note 9 / 9S / 9 Pro",
+                "Redmi 9 / 9A / 9C", "Redmi K20 / K20 Pro",
+                "Redmi K30 / K30 Pro", "Poco X3 NFC"
+            ],
+            redmiNew: [
+                "Redmi Note 10 / 10 Pro", "Redmi Note 11 / 11 Pro",
+                "Redmi Note 12 / 12 Turbo", "Redmi Note 13 / 13 Pro+",
+                "Redmi K40 / K40 Gaming", "Redmi K50 / K50 Ultra",
+                "Redmi K60 / K60 Pro", "Redmi K70 / K70 Pro",
+                "Poco F3 / F4 / F5", "Poco X6 Pro"
+            ],
+            oppoOld: [
+                "OPPO A3s", "OPPO A5s", "OPPO F9 / F9 Pro",
+                "OPPO F11 / F11 Pro", "OPPO A31", "OPPO A53",
+                "OPPO Reno 2 / 2F", "OPPO Reno 3 / 3 Pro",
+                "OPPO Reno 4 / 4 Pro", "OPPO Reno 5"
+            ],
+            oppoNew: [
+                "OPPO Reno 6 / 6Z", "OPPO Reno 7 / 7Z",
+                "OPPO Reno 8 / 8 Pro", "OPPO Reno 10 / 10 Pro+",
+                "OPPO Reno 11 Series", "OPPO Find X5 / X5 Pro",
+                "OPPO Find X6 / X6 Pro", "OPPO Find X7 Ultra",
+                "OPPO A78", "OPPO A98 5G"
+            ]
+        };
+
+        /* --- GIỮ NGUYÊN TOÀN BỘ HÀM LOGIC GỐC --- */
+        function init() {
+            const sel = document.getElementById('deviceSelect');
+            sel.innerHTML = ""; // Clear để đảm bảo không bị lặp
+            function addGroup(label, list, valueCode) {
+                let g = document.createElement('optgroup');
+                g.label = label;
+                list.forEach(d => {
+                    let opt = new Option(d, valueCode);
+                    g.appendChild(opt);
+                });
+                sel.appendChild(g);
+            }
+            addGroup("APPLE (Đời Cũ)", devices.iphoneOld, "IP_OLD");
+            addGroup("APPLE (Đời Mới)", devices.iphoneNew, "IP_NEW");
+            addGroup("SAMSUNG GALAXY", devices.samsung, "SAMSUNG");
+            addGroup("XIAOMI REDMI (Đời Cũ)", devices.redmiOld, "RED_OLD");
+            addGroup("XIAOMI REDMI (Đời Mới)", devices.redmiNew, "RED_NEW");
+            addGroup("OPPO (Đời Cũ)", devices.oppoOld, "OPPO_OLD");
+            addGroup("OPPO (Đời Mới)", devices.oppoNew, "OPPO_NEW");
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value;
+            if (pass === "phamhoa") {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainMenu').style.display = 'flex';
+                init();
+            } else {
+                let inp = document.getElementById('passwordInput');
+                inp.classList.add('shake-anim');
+                inp.value = "";
+                inp.placeholder = "MẬT KHẨU SAI!";
+                setTimeout(() => inp.classList.remove('shake-anim'), 400);
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(tabName === 'sens') {
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                document.getElementById('tabSens').style.display = 'block';
+                document.getElementById('tabBoost').style.display = 'none';
+            } else {
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                document.getElementById('tabSens').style.display = 'none';
+                document.getElementById('tabBoost').style.display = 'block';
+            }
+        }
+
+        function checkFollow() { document.getElementById('followModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('followModal').style.display = 'none'; }
+        function confirmFollow() {
+    // Đã thay bằng link TikTok chuẩn của phamhoa.net
+    window.open("https://www.tiktok.com/@phamhoa.net?_r=1&_t=ZS-95XkgALk2in", "_blank");
+    closeModal();
+    switchTab('boost');
+}
+
+        function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function generateSensitivity() {
+            const type = document.getElementById('deviceSelect').value;
+            const resBox = document.getElementById('resultArea');
+            const content = document.getElementById('sensContent');
+
+            resBox.style.display = 'none';
+            setTimeout(() => {
+                resBox.style.display = 'block';
+                resBox.classList.add('flash-effect');
+                setTimeout(() => resBox.classList.remove('flash-effect'), 500);
+            }, 50);
+
+            let s1, s2, s3, s4;
+
+            if(type === "IP_OLD") { s1 = rand(165, 195); s2 = rand(120, 170); s3 = rand(150, 180); s4 = rand(140, 180); } 
+            else if (type === "IP_NEW") { s1 = rand(135, 180); s2 = rand(100, 135); s3 = rand(140, 165); s4 = rand(135, 180); } 
+            else if (type === "SAMSUNG") { s1 = rand(155, 200); s2 = rand(155, 200); s3 = rand(160, 200); s4 = rand(150, 200); } 
+            else if (type === "RED_OLD") { s1 = rand(175, 195); s2 = rand(150, 200); s3 = rand(150, 200); s4 = rand(150, 200); } 
+            else if (type === "RED_NEW") { s1 = rand(145, 180); s2 = rand(140, 190); s3 = rand(140, 190); s4 = rand(140, 190); } 
+            else if (type === "OPPO_OLD") { s1 = rand(180, 195); s2 = rand(150, 200); s3 = rand(150, 200); s4 = rand(150, 200); } 
+            else if (type === "OPPO_NEW") { s1 = rand(150, 190); s2 = rand(145, 195); s3 = rand(145, 195); s4 = rand(145, 195); }
+
+            let fireBtn = rand(30, 45);
+
+            content.innerHTML = `
+                <div class="sens-item"><span>🌀 Nhìn xung quanh</span> <span class="sens-value">${s1}</span></div>
+                <div class="sens-item"><span>🔴 Red Dot Sight</span> <span class="sens-value">${s2}</span></div>
+                <div class="sens-item"><span>🔭 Scope 2x View</span> <span class="sens-value">${s3}</span></div>
+                <div class="sens-item"><span>🔭 Scope 4x View</span> <span class="sens-value">${s4}</span></div>
+                <div class="sens-item" style="border-top: 1px solid rgba(0,255,136,0.2); padding-top: 10px; margin-top: 10px;">
+                    <span style="font-weight: 900; color: #fff;">🔥 NÚT BẮN OPTIMAL:</span> <span class="fire-btn-val">${fireBtn}%</span>
+                </div>
+            `;
+        }
+
+        function runOptimization() {
+            const btn = document.getElementById('btnOpt');
+            const res = document.getElementById('optResult');
+            btn.innerHTML = `⏳ LOADING CORE...`;
+            btn.disabled = true;
+            setTimeout(() => { btn.innerHTML = `⚙️ FIXING FPS...`; }, 800);
+            setTimeout(() => {
+                btn.innerHTML = `✅ FINISHED`;
+                btn.style.background = "#222";
+                btn.style.color = "#444";
+                res.style.display = 'block';
+            }, 2200);
+        }
+
+        document.getElementById("passwordInput").addEventListener("keypress", (e) => { if (e.key === "Enter") checkPassword(); });
+
+    </script>
+</body>
+</html>
